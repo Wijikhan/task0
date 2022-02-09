@@ -3,6 +3,7 @@ package com.example.practice2;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -15,11 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.practice2.Utilis.SharedPreferenceHelper;
+
 import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor myEdit;
+    SharedPreferenceHelper sharedPreferenceHelper;
+    Context context;
     EditText name , email , password ;
     Button signupButton;
     String emailvalid;
@@ -29,8 +32,9 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-         sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
-         myEdit = sharedPreferences.edit();
+        context = SignupActivity.this;
+
+
 
         setTitle("Sign Up");
 
@@ -69,11 +73,10 @@ public class SignupActivity extends AppCompatActivity {
                    {
 
 
-                       myEdit.putString("name", name.getText().toString());
-                       myEdit.putString("email", email.getText().toString());
-                       myEdit.putString("password", password.getText().toString());
-                       myEdit.putBoolean("logout", true);
-                       myEdit.commit();
+                       sharedPreferenceHelper.setSharedPreferenceString(context , "name", name.getText().toString());
+                       sharedPreferenceHelper.setSharedPreferenceString(context , "email", email.getText().toString());
+                       sharedPreferenceHelper.setSharedPreferenceString(context , "password", password.getText().toString());
+                       sharedPreferenceHelper.setSharedPreferenceBoolean(context , "logout", true);
                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                        startActivity(intent);
                        finish();
@@ -97,14 +100,6 @@ public class SignupActivity extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
-
            }
        });
 
@@ -114,11 +109,11 @@ public class SignupActivity extends AppCompatActivity {
 
     public void viewvalue(View view)
     {
-        Log.d("view", String.valueOf(sharedPreferences.getBoolean("logout", false)));
-        Log.d("view", sharedPreferences.getString("name", " Empty value "));
+        Log.d("view", String.valueOf(sharedPreferenceHelper.getSharedPreferenceBoolean(context , "logout", false)));
+        Log.d("view", sharedPreferenceHelper.getSharedPreferenceString(context , "name", " Empty value "));
 
-        Log.d("view", sharedPreferences.getString("email", " Empty value "));
-        Log.d("view", sharedPreferences.getString("password", " Empty value "));
+        Log.d("view", sharedPreferenceHelper.getSharedPreferenceString(context , "email", " Empty value "));
+        Log.d("view", sharedPreferenceHelper.getSharedPreferenceString(context , "password", " Empty value "));
 
 
     }

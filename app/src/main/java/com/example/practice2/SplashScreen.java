@@ -2,6 +2,7 @@ package com.example.practice2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,10 +12,15 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.practice2.Utilis.SharedPreferenceHelper;
+
 public class SplashScreen extends AppCompatActivity {
     private static int SPLASH_SCREEN_TIME_OUT=2000;
     private ImageView logoImage;
-    SharedPreferences sharedPreferences;
+
+
+    SharedPreferenceHelper sharedPreferenceHelper;
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,12 +29,12 @@ public class SplashScreen extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
-        sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+
 
         setContentView(R.layout.activity_splash_screen);
 
 
-
+        context = SplashScreen.this;
 
       int[] logo = {R.drawable.logo1 , R.drawable.logo2 , R.drawable.logo3 , R.drawable.logo4};
 
@@ -41,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void run() {
                 Intent i;
-                if (sharedPreferences.getBoolean("logout", false) == true)
+                if (SharedPreferenceHelper.getSharedPreferenceBoolean(context , "logout", false) == true)
                 {
                     i = new Intent(SplashScreen.this , MainActivity.class);
                 }
